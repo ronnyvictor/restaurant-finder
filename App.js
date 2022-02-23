@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createContext, useState } from 'react'
+import { StatusBar } from 'expo-status-bar'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import RestaurantList from './src/components/RestaurantList'
+import Details from './src/components/Details'
+
+const Stack = createNativeStackNavigator()
+export const RestaurantContext = createContext()
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	const [selectedRestaurant, setSelectedRestaurant] = useState()
+	return (
+		<NavigationContainer>
+			<RestaurantContext.Provider
+				value={{ selectedRestaurant, setSelectedRestaurant }}
+			>
+				<Stack.Navigator>
+					<Stack.Screen name='Home' component={RestaurantList} />
+					<Stack.Screen name='Details' component={Details} />
+				</Stack.Navigator>
+				<StatusBar style='auto' />
+			</RestaurantContext.Provider>
+		</NavigationContainer>
+	)
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
